@@ -2,6 +2,7 @@
 
 class Qazaqparat {
 
+	// VERSION 0.01
 
 	private static $ENCODE_MAP = array(
 
@@ -50,29 +51,19 @@ class Qazaqparat {
 
 	);
 
-	public static function in($str) {
+	private static function transliterate($str, $KEY_MAP) {
+
 		$resultString = '';
 		$chrArray = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
 		foreach ($chrArray as $char) {
-			$resultString .= array_key_exists($char, self::$ENCODE_MAP) ? self::$ENCODE_MAP[$char] : $char;
+			$resultString .= array_key_exists($char, $KEY_MAP) ? $KEY_MAP[$char] : $char;
 		}
 
 		return $resultString;
 	}
 
-	public static function out($str) {
-		$resultString = '';
-		$chrArray = preg_split('//u', $str, -1, PREG_SPLIT_NO_EMPTY);
-		$DECODE_MAP = array_flip(self::$ENCODE_MAP);
-
-		var_dump($DECODE_MAP);
-
-		foreach ($chrArray as $char) {
-			$resultString .= array_key_exists($char, $DECODE_MAP) ? $DECODE_MAP[$char] : $char;
-		}
-
-		return $resultString;
-	}
+	public static function in($str)  { return self::transliterate($str, self::$ENCODE_MAP); }
+	public static function out($str) { return self::transliterate($str, array_flip(self::$ENCODE_MAP)); }
 }
 
 ?>
